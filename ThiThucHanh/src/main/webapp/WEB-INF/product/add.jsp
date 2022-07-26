@@ -56,8 +56,7 @@
                             <div class="card-body">
                                 <h4 class="header-title mb-3" style="font-size: larger">New Product</h4>
 
-                                <form method="post" class="needs-validation" novalidate=""
-                                      enctype="multipart/form-data">
+                                <form method="post" class="needs-validation">
                                     <div class="form-group mb-3">
                                         <label for="validationCustom01">Name</label>
                                         <input type="text" class="form-control" id="validationCustom01" name="name"

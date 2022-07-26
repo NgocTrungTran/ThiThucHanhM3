@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAO implements IProductDao{
+public class ProductDAO implements IProductDao {
     private final String jdbcURL = "jdbc:mysql://localhost:3306/products?useSSL=false";
     private final String jdbcUsername = "root";
     private final String jdbcPassword = "Trantrung.00";
@@ -16,8 +16,10 @@ public class ProductDAO implements IProductDao{
     private static final String UPDATE_PRODUCT_SQL = "UPDATE `products`.`product` SET `name` = ?, `price` = ?, `quantity` = ?, `color` = ?, `descri` = ?, `category` = ? WHERE (`id` = ?);";
     private static final String DELETE_PRODUCT_SQL = "delete from `products`.`product` where id = ?;";
     private static final String SELECT_PRODUCT_BY_ID = "select * from `products`.`product` where id =?;";
+
     public ProductDAO() {
     }
+
     protected Connection getConnection() {
         Connection connection = null;
         try {
@@ -29,6 +31,7 @@ public class ProductDAO implements IProductDao{
         }
         return connection;
     }
+
     @Override
     public List<Product> selectAllProduct() {
         List<Product> products = new ArrayList<> ();
@@ -50,7 +53,7 @@ public class ProductDAO implements IProductDao{
                 String descri = rs.getString ( "descri" );
                 String category = rs.getString ( "category" );
 
-                products.add ( new Product ( id, name, price, quantity, color, descri, category) );
+                products.add ( new Product ( id, name, price, quantity, color, descri, category ) );
             }
         } catch (SQLException e) {
             e.printStackTrace ();
@@ -62,26 +65,26 @@ public class ProductDAO implements IProductDao{
     public Product selectProduct(int id) {
         Product product = null;
         // Step 1: Establishing a Connection
-        try (Connection connection = getConnection();
+        try (Connection connection = getConnection ();
              // Step 2:Create a statement using connection object
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PRODUCT_BY_ID);) {
-            preparedStatement.setInt(1, id);
-            System.out.println(preparedStatement);
+             PreparedStatement preparedStatement = connection.prepareStatement ( SELECT_PRODUCT_BY_ID );) {
+            preparedStatement.setInt ( 1, id );
+            System.out.println ( preparedStatement );
             // Step 3: Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = preparedStatement.executeQuery ();
 
             // Step 4: Process the ResultSet object.
-            while (rs.next()) {
+            while (rs.next ()) {
                 String name = rs.getString ( "name" );
                 int price = rs.getInt ( "price" );
                 int quantity = rs.getInt ( "quantity" );
                 String color = rs.getString ( "color" );
                 String descri = rs.getString ( "descri" );
                 String category = rs.getString ( "category" );
-                product = new Product (id, name, price, quantity, color, descri, category);
+                product = new Product ( id, name, price, quantity, color, descri, category );
             }
         } catch (SQLException e) {
-            printSQLException(e);
+            printSQLException ( e );
         }
         return product;
     }
@@ -130,6 +133,33 @@ public class ProductDAO implements IProductDao{
         }
         return rowDeleted;
     }
+
+    @Override
+    public List<Product> searchProduct(String search) throws SQLException {
+        Connection connection = getConnection ();
+        System.out.println ( "numberpage" );
+
+        String query = "select * from `products`.`product` WHERE name like ?";
+        List<Product> productList = new ArrayList<> ();
+        PreparedStatement ps = connection.prepareStatement ( query );
+        ps.setString ( 1, '%' + search + '%' );
+
+        ResultSet rs = ps.executeQuery ();
+        while (rs.next ()) {
+            Product product = new Product ();
+            product.setId ( rs.getInt ( "id" ) );
+            product.setName ( rs.getString ( "name" ) );
+            product.setPrice ( rs.getInt ( "price" ) );
+            product.setQuantity ( rs.getInt ( "quantity" ) );
+            product.setColor ( rs.getString ( "color" ) );
+            product.setDescribe ( rs.getString ( "descri" ) );
+            product.setCategory ( rs.getString ( "category" ) );
+
+            productList.add ( product );
+        }
+        return productList;
+    }
+
 
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {

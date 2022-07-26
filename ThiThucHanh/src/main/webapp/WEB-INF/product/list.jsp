@@ -51,11 +51,11 @@
                                     </div>
                                 </div>
                                 <div class="col-5" style="float: left">
-                                    <form method="get" action="/students?action=list">
+                                    <form method="get" action="/products?action=search">
                                         <input type="hidden" value="search" name="action">
                                         <div class="input-group">
                                             <input type="search" class="form-control" name="search"
-                                                   placeholder="code, firstname, lastname, email, phone, or address">
+                                                   placeholder="">
                                             <button class="btn btn-primary" type="submit">
                                                 <i class="fe-search"></i>
                                             </button>

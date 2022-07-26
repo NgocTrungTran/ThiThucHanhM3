@@ -11,4 +11,5 @@ public interface IProductDao {
     void insertProduct(Product product) throws SQLException;
     boolean editProduct(Product product) throws SQLException;
     boolean deleteProduct(int id) throws SQLException;
+    List<Product> searchProduct(String search) throws SQLException;
 }

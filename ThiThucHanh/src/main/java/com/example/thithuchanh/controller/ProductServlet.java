@@ -48,7 +48,7 @@ public class ProductServlet extends HttpServlet {
                     deleteProduct ( req, resp );
                     break;
                 case "search":
-//                    searchAllField ( request, response );
+                    searchProduct ( req, resp );
                     break;
                 default:
                     listAllProduct ( req, resp );
@@ -90,6 +90,13 @@ public class ProductServlet extends HttpServlet {
         ProductDAO dao = new ProductDAO ();
         List<Product> listProduct = dao.selectAllProduct();
         request.setAttribute ( "listProduct", listProduct );
+        RequestDispatcher view = request.getRequestDispatcher ( "/WEB-INF/product/list.jsp" );
+        view.forward ( request, response );
+    }
+    private void searchProduct(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String search = request.getParameter ( "search" );
+        List<Product> productList = productDao.searchProduct ( search );
+        request.setAttribute ( "listProduct", productList );
         RequestDispatcher view = request.getRequestDispatcher ( "/WEB-INF/product/list.jsp" );
         view.forward ( request, response );
     }
@@ -146,8 +153,9 @@ public class ProductServlet extends HttpServlet {
 
         Product book = new Product (id, name, price, quantity, color, descri, category);
         productDao.editProduct (book);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/products");
-        dispatcher.forward(request, response);
+//        RequestDispatcher dispatcher = request.getRequestDispatcher("/products");
+//        dispatcher.forward(request, response);
+        response.sendRedirect ( "/products" );
     }
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
