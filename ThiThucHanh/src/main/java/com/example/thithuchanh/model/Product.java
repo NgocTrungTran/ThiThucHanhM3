@@ -47,8 +47,6 @@ public class Product {
         this.id = id;
     }
 
-    @NotEmpty(message = "Name not empty")
-    @Length(min = 1, max = 50, message = "Lenght of Name form 1 - 50 character ")
     public String getName() {
         return name;
     }
@@ -65,8 +63,6 @@ public class Product {
         this.price = price;
     }
 
-    @Min(value = 1, message = "So luong phai lon hon 1")
-    @Max(value = 100, message = "So luong phai nho hon 100")
     public int getQuantity() {
         return quantity;
     }
